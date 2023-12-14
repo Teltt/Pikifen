@@ -1110,7 +1110,7 @@ void gameplay_state::draw_lighting_filter() {
             mob* m_ptr = mobs.all[m];
             if(
                 has_flag(m_ptr->flags, MOB_FLAG_HIDDEN) ||
-                m_ptr->type->category->id == MOB_CATEGORY_DECORATIONS
+                m_ptr->type->blackout_radius == 0.0f
             ) {
                 continue;
             }
@@ -1120,7 +1120,14 @@ void gameplay_state::draw_lighting_filter() {
                 &game.world_to_screen_transform,
                 &pos.x, &pos.y
             );
-            float radius = m_ptr->radius * 4.0 * game.cam.zoom;
+            float radius = 4.0f * game.cam.zoom;
+            
+            if(m_ptr->type->blackout_radius > 0.0f) {
+                radius *= m_ptr->type->blackout_radius;
+            } else {
+                radius *= m_ptr->radius;
+            }
+            
             al_draw_scaled_bitmap(
                 game.sys_assets.bmp_spotlight,
                 0, 0, 64, 64,

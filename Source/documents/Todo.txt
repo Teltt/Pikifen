@@ -14,20 +14,10 @@ Current tasks (tasks being worked on, but not yet committed)
             The ability to handle randomized volumes and pitches (and maybe panning)
             If a sound needs to stop suddenly, it should fade out (very quickly). This stops the sound from crackling
             When you cancel holding a Pikmin, its standby squeal sound should stop
-        Reorganize the backend
-            There should be multiple mixers, which can feed into other mixers, until eventually the "master" mixer connects to the Allegro voice
-        Playback FSM
-            Waiting: Waiting some time before starting to play. Can go to Playing
-            Playing: Can go to Waiting or Stopping
-            Stopping: Quickly fading out so it can then be destroyed
-            Destroyed: Unusable, and ready to be deleted
-        A way for sounds to repeat with an interval from the same source
-        Sounds that are being destroyed should fade out quickly
         Ducking
         Load system sounds from System_asset_file_names.txt
         Resetting when an area is entered or exited
         Make it so that only 6 or so sounds can play at once?
-        Some sounds should be able to start a random of amount of time after they're supposed to. This helps everything feel organic instead of robotic and calculated.
 
 
 Next tasks (roughly sorted most important first)
@@ -37,29 +27,18 @@ Next tasks (roughly sorted most important first)
 
     --- 0.25.0 ---
     Script improvements
-        Revamp get_info
-            Add get_info state
-            https://github.com/Helodity/Pikifen/tree/get_info-rework
         Make it so you can run an action on behalf of another mob
             Be careful with state switching, variables, and focus
             Don't allow actions like if, else, end_if, goto, label?
             Maybe have a "start_running_as" action and a "stop_running_as"
         Action groups (like functions)
-    Idle Pikmin shouldn't be called by "bumping" until some seconds, since if you throw a Pikmin nearby, it'll be hard to get it to stay
-        Maybe it should only count as bumped if the leader had previously moved a certain distance from it?
     Use a screenshot for the title screen
-    Add faint icons to the title screen buttons?
-    Draw a gradient at the edges of "list" GUI items when there's more stuff below or above scrolled out of view
+    If a mob only has one link, pressing the delete link button should instantly delete that one, not make the user choose
+    Idle Pikmin should prioritize checking for tasks instead of leaders. This way one can spawn a Pikmin nearby on a task and it'll do the task, instead of going to the leader
     More puzzle elements
         A timed lever. There's a vine connected to it that keeps tugging at the handle, keeping it in the off position. Flipping it (like a normal lever) turns it into the on position, and the vine pulling means there's a time limit until the lever flips back to off. Throwing a Pikmin at it or interacting with it while it's in the on position and being pulled will make it toggle to the off position so the player can reset the situation and try again (and so that the player can't arbitrarily extend the timer forever)
         A cyclic lever? It automatically flips on and off over time
         A moving platform, useful to traverse a hazardous floor. Maybe Stemples?
-    Path things
-        [NEEDS BRAINSTORMING] Path links that are one-way for drop-offs don't make much sense, since Winged Pikmin can fly up them...
-            Check what P3 does, maybe P4
-        If you start drawing a path on top of a link, it should split the link and start drawing on that stop
-        The stops should get the properties, not the links
-        Path stops should have a radius
     Resources should be able to specify what happens when they fall in the pit; carriable rocks need to respawn
     Make Rock Pikmin colors darker (thanks Nataly171)
     If a Pikmin catches on fire it should lose its maturity and go back to a leaf
@@ -77,6 +56,7 @@ Next tasks (roughly sorted most important first)
                 Menu item selected
                 Menu backed out of
                 Changing an option's value, toggling stuff like all Pikmin types in the Onion, etc.
+                    Could change pitch when you're changing those multi-value options in the options menu
             HUD
                 Ready...
                 GO!
@@ -129,11 +109,7 @@ Next tasks (roughly sorted most important first)
         Recreate the following sounds, as per user feedback
             Plucking -- sounds like crap
         This might help
-            https://www.allegro.cc/forums/thread/617315
             https://youtu.be/Vjm--AqG04Y?t=713
-            https://www.allegro.cc/forums/thread/617707 ?
-            https://www.youtube.com/watch?v=PVA48I2n-qQ
-            https://askagamedev.tumblr.com/post/188860396561/one-thing-i-love-about-your-blog-is-learning-about a sort of priority system
     Music
         Planned variant compatibility: Day + fight, sunset + fight, boss
         Figure out how many variants can play simultaneously so that the engine can smoothly increase and decrease their volumes to blend.
@@ -153,6 +129,7 @@ Next tasks (roughly sorted most important first)
             Editors
             A couple of gameplay songs
     Maybe stuff like interactables and carriable corpses should be delegated to an entity component system on the mob class
+    Mob types should be able to specify that they need a link to work properly, so the area editor can inform the player if there's no link
     Find some way of making content sharing easier
         Maybe the Game_data folder should have a "base" folder where everything goes, and people can make their own folders for their own content. Then, they simply share that folder
         A content manager, which knows what areas exist, what graphics exist, what enemies exist, etc.
@@ -276,6 +253,7 @@ Next tasks (roughly sorted most important first)
     Demo content
         Ice Pikmin
         Glow Pikmin
+        A tall grass mob
         Add more treasures
             Ball of yarn treasure
             Shizakipiki Soda bottle cap
@@ -829,6 +807,10 @@ Misc things (so I don't forget)
                 Change the cursor for when you're dragging, drawing, placing something new, etc.
                 Glow and grow the new sector, object, etc. when it is created
                 Slightly grow the current thing when you select it, or maybe when you drag it?
+                The snapped cursor position should interpolate smoothly (but if you finish your operation when it's interpolating, it should finish instantly)
+                When you're going to place something new:
+                    Show a dotted outline of the location the new thing will go to
+                    As the cursor moves, the icon for the thing wobbles around, as if fixed to an anchor at the mouse
             Cursors
                 Normal cursor
                 For when you're drawing something
