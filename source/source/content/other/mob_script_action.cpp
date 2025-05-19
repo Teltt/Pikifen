@@ -1353,7 +1353,7 @@ Mob* getTargetMob(
         break;
     } case MOB_ACTION_MOB_TARGET_TYPE_LINK: {
     
-        if(data.args[16] == "" && !data.m->link_anon_size ==0 && data.m->links["0"]) {
+        if(data.args[16] == "" && !data.m->link_anon_size ==0 && data.m->links.find("0")!= data.m->links.end() && data.m->links["0"]) {
             return data.m->links["0"];
         }
         if(data.args[16] != "" && data.m->links.find(data.args[16]) != data.m->links.end()){
